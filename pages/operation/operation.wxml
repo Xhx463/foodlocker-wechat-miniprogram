@@ -1,0 +1,67 @@
+<view class="container">
+  <view class="content">
+    <view class="section">
+      <view class="section-title">运营管理</view>
+      <view class="stats-grid">
+        <view class="stat-item">
+          <view class="stat-value">{{stats.totalCabinets}}</view>
+          <view class="stat-label">柜机数量</view>
+        </view>
+        <view class="stat-item">
+          <view class="stat-value">{{stats.occupiedLattices}}</view>
+          <view class="stat-label">占用格口</view>
+        </view>
+        <view class="stat-item">
+          <view class="stat-value">{{stats.todayOrders}}</view>
+          <view class="stat-label">今日订单</view>
+        </view>
+        <view class="stat-item">
+          <view class="stat-value">{{stats.totalOrders}}</view>
+          <view class="stat-label">总订单数</view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="section">
+      <view class="section-title">快速操作</view>
+      <view class="action-grid">
+        <view class="action-item" bindtap="goToLatticeVisual">
+          <view class="action-icon">📊</view>
+          <view class="action-label">格口可视化</view>
+        </view>
+        <view class="action-item" bindtap="remoteOpenDoor">
+          <view class="action-icon">🔓</view>
+          <view class="action-label">远程开门</view>
+        </view>
+        <view class="action-item" bindtap="lockLattice">
+          <view class="action-icon">🔒</view>
+          <view class="action-label">锁定格口</view>
+        </view>
+        <view class="action-item" bindtap="clearLatticeStatus">
+          <view class="action-icon">🧹</view>
+          <view class="action-label">清理状态</view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="section">
+      <view class="section-title">最近订单</view>
+      <view class="order-list">
+        <view wx:for="{{recentOrders}}" wx:key="id" class="order-item">
+          <view class="order-header">
+            <view class="order-id">订单号: {{item.id}}</view>
+            <view class="order-status">{{item.status}}</view>
+          </view>
+          <view class="order-body">
+            <view class="order-info">取餐码: {{item.accessCode}}</view>
+            <view class="order-info">顾客: {{item.userPhone}}</view>
+            <view class="order-info">时间: {{item.createTime}}</view>
+          </view>
+        </view>
+        <view wx:if="recentOrders.length === 0" class="empty-message">
+          暂无订单数据
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

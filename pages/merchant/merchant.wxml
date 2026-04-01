@@ -1,0 +1,104 @@
+<!--pages/merchant/merchant.wxml-->
+<view class="container fade-in">
+  <!-- 头部区域 -->
+  <view class="header merchant-header">
+    <view class="logo merchant-logo">🛠️</view>
+    <view class="title merchant-title">商家管理端</view>
+    <view class="subtitle merchant-subtitle">管理与监控系统</view>
+  </view>
+
+  <!-- 系统状态 -->
+  <view class="section merchant-section">
+    <view class="section-title merchant-section-title">系统状态</view>
+    <view class="status-grid merchant-status-grid">
+      <view class="status-card merchant-status-card">
+        <view class="status-number merchant-status-number">{{totalLockers}}</view>
+        <view class="status-label merchant-status-label">柜子总数</view>
+      </view>
+      <view class="status-card merchant-status-card">
+        <view class="status-number merchant-status-number">{{availableLockers}}</view>
+        <view class="status-label merchant-status-label">可用柜子</view>
+      </view>
+      <view class="status-card merchant-status-card">
+        <view class="status-number merchant-status-number">{{occupiedLockers}}</view>
+        <view class="status-label merchant-status-label">占用柜子</view>
+      </view>
+      <view class="status-card merchant-status-card">
+        <view class="status-number merchant-status-number">{{usageRate}}%</view>
+        <view class="status-label merchant-status-label">使用率</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 柜子状态 -->
+  <view class="section merchant-section">
+    <view class="section-title merchant-section-title">柜子状态</view>
+    <!-- 格口大小说明 -->
+    <view class="locker-size-legend">
+      <view class="legend-item">
+        <view class="legend-icon small">S</view>
+        <view class="legend-text">小格口(1-8) 外卖</view>
+      </view>
+      <view class="legend-item">
+        <view class="legend-icon medium">M</view>
+        <view class="legend-text">中格口(9-16) 一般快递</view>
+      </view>
+      <view class="legend-item">
+        <view class="legend-icon large">L</view>
+        <view class="legend-text">大格口(17-24) 大件快递</view>
+      </view>
+    </view>
+    <view class="locker-grid merchant-locker-grid">
+      <view wx:for="{{lockerStatus}}" wx:key="index" class="locker-cell merchant-locker-cell locker-{{item.status}} locker-size-{{item.size}}" style="{{item.status === 'occupied' ? (item.temperature === 'constant' ? 'background: linear-gradient(135deg, #e3f2fd, #bbdefb); border-color: #2196f3;' : item.temperature === 'low' ? 'background: linear-gradient(135deg, #e0f7fa, #b2ebf2); border-color: #00bcd4;' : 'background: linear-gradient(135deg, #fff3e0, #ffcc80); border-color: #ff9800;' ) : ''}}" bindtap="onLockerTap" data-index="{{index}}">
+        {{index + 1}}
+        <view class="locker-size-label">{{item.size === 'small' ? 'S' : item.size === 'medium' ? 'M' : 'L'}}</view>
+        <view wx:if="{{item.status === 'occupied' && item.temperature}}" class="locker-temperature">
+          {{item.temperature === 'constant' ? '🌡️' : item.temperature === 'low' ? '❄️' : '🔥'}}
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 订单管理 -->
+  <view class="section merchant-section">
+    <view class="section-title merchant-section-title">订单管理</view>
+    <view class="order-list merchant-order-list">
+      <view wx:for="{{recentOrders}}" wx:key="index" class="order-item merchant-order-item">
+        <view class="order-header merchant-order-header">
+          <view class="order-id merchant-order-id">订单号: {{item.orderId}}</view>
+          <view class="order-status merchant-order-status order-{{item.status}}">{{item.statusText}}</view>
+        </view>
+        <view class="order-body merchant-order-body">
+          <view class="order-info merchant-order-info">商家: {{item.merchantName}}</view>
+          <view class="order-info merchant-order-info">时间: {{item.time}}</view>
+          <view class="order-info merchant-order-info" wx:if="{{item.pickupCode}}">取餐码: {{item.pickupCode}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="button-container">
+    <view class="menu-button merchant-menu-button" bindtap="refreshStatus">
+      <view class="button-content">
+        <view class="button-icon merchant-button-icon">🔄</view>
+        <view class="button-text merchant-button-text">刷新状态</view>
+      </view>
+      <view class="arrow-icon">→</view>
+    </view>
+
+    <view class="menu-button merchant-menu-button" bindtap="exportData">
+      <view class="button-content">
+        <view class="button-icon merchant-button-icon">📊</view>
+        <view class="button-text merchant-button-text">导出数据</view>
+      </view>
+      <view class="arrow-icon">→</view>
+    </view>
+  </view>
+
+  <!-- 底部信息 -->
+  <view class="footer merchant-footer">
+    <view>递煌小黄柜 v1.0.0</view>
+    <view>© 2026 Food Locker System</view>
+  </view>
+</view>

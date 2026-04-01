@@ -1,0 +1,113 @@
+<!--pages/courier/courier.wxml-->
+<view class="container fade-in">
+  <!-- 头部区域 -->
+  <view class="header courier-header">
+    <view class="logo courier-logo">📦</view>
+    <view class="title courier-title">快递小哥端</view>
+    <view class="subtitle courier-subtitle">取件与派件服务</view>
+  </view>
+
+  <!-- 功能选择 -->
+  <view class="button-container">
+    <view class="menu-button courier-menu-button" bindtap="showPickupSection">
+      <view class="button-content">
+        <view class="button-icon courier-button-icon">📦</view>
+        <view class="button-text courier-button-text">取件服务</view>
+      </view>
+      <view class="arrow-icon">→</view>
+    </view>
+
+    <view class="divider"></view>
+
+    <view class="menu-button courier-menu-button" bindtap="showDeliverySection">
+      <view class="button-content">
+        <view class="button-icon courier-button-icon">🚚</view>
+        <view class="button-text courier-button-text">派件服务</view>
+      </view>
+      <view class="arrow-icon">→</view>
+    </view>
+  </view>
+
+  <!-- 取件服务 -->
+  <view class="section courier-section" wx:if="{{showPickup}}">
+    <view class="section-title courier-section-title">取件服务</view>
+    <view class="input-group">
+      <view class="input-label courier-input-label">快递单号</view>
+      <input class="input-field courier-input-field" placeholder="请输入快递单号" bindinput="onCourierIdInput" value="{{courierId}}" />
+    </view>
+    <button class="primary-button courier-primary-button" bindtap="pickupCourier">确认取件</button>
+    <view class="result-message courier-result-message" wx:if="{{pickupResult}}">
+      <view class="result-{{pickupResult.type}}">{{pickupResult.message}}</view>
+    </view>
+  </view>
+
+  <!-- 派件服务 -->
+  <view class="section courier-section" wx:if="{{showDelivery}}">
+    <view class="section-title courier-section-title">派件服务</view>
+    <view class="input-group">
+      <view class="input-label courier-input-label">快递单号</view>
+      <input class="input-field courier-input-field" placeholder="请输入快递单号" bindinput="onDeliveryIdInput" value="{{deliveryId}}" />
+    </view>
+    <view class="input-group">
+      <view class="input-label courier-input-label">收件人姓名</view>
+      <input class="input-field courier-input-field" placeholder="请输入收件人姓名" bindinput="onReceiverNameInput" value="{{receiverName}}" />
+    </view>
+    <view class="input-group">
+      <view class="input-label courier-input-label">收件人电话</view>
+      <input class="input-field courier-input-field" placeholder="请输入收件人电话" bindinput="onReceiverPhoneInput" value="{{receiverPhone}}" />
+    </view>
+    <view class="input-group">
+      <view class="input-label courier-input-label">取件码</view>
+      <input class="input-field courier-input-field" placeholder="请输入取件码" bindinput="onPickupCodeInput" value="{{pickupCode}}" />
+    </view>
+    <view class="input-group">
+      <view class="input-label courier-input-label">格口大小</view>
+      <view class="locker-size-selector">
+        <view class="locker-size-option" wx:for="{{lockerSizeOptions}}" wx:key="index" 
+              class="locker-size-option {{selectedLockerSize === item.value ? 'selected' : ''}}"
+              bindtap="selectLockerSize" data-value="{{item.value}}">
+          <view class="locker-size-icon">{{item.icon}}</view>
+          <view class="locker-size-label">{{item.label}}</view>
+          <view class="locker-size-desc">{{item.desc}}</view>
+        </view>
+      </view>
+    </view>
+    <button class="primary-button courier-primary-button" bindtap="deliverParcel">确认派件</button>
+    <view class="result-message courier-result-message" wx:if="{{deliveryResult}}">
+      <view class="result-{{deliveryResult.type}}">{{deliveryResult.message}}</view>
+      <view wx:if="{{deliveryResult.pickupCode}}" class="pickup-code courier-pickup-code">取件码：{{deliveryResult.pickupCode}}</view>
+      <view wx:if="{{deliveryResult.lockerSize}}" class="locker-size-info">格口大小：{{deliveryResult.lockerSize}}</view>
+    </view>
+  </view>
+
+  <!-- 柜子状态 -->
+  <view class="section courier-section">
+    <view class="section-title courier-section-title">柜子状态</view>
+    <!-- 格口大小说明 -->
+    <view class="locker-size-legend">
+      <view class="legend-item">
+        <view class="legend-icon medium">M</view>
+        <view class="legend-text">中格口(1-8) 一般快递</view>
+      </view>
+      <view class="legend-item">
+        <view class="legend-icon large">L</view>
+        <view class="legend-text">大格口(9-16) 大件快递</view>
+      </view>
+    </view>
+    <view class="locker-grid courier-locker-grid">
+      <view wx:for="{{lockerStatus}}" wx:key="index" class="locker-cell courier-locker-cell locker-{{item.status}} locker-size-{{item.size}}" style="{{item.status === 'occupied' ? (item.temperature === 'constant' ? 'background: linear-gradient(135deg, #e3f2fd, #bbdefb); border-color: #2196f3;' : item.temperature === 'low' ? 'background: linear-gradient(135deg, #e0f7fa, #b2ebf2); border-color: #00bcd4;' : 'background: linear-gradient(135deg, #fff3e0, #ffcc80); border-color: #ff9800;' ) : ''}}">
+        {{index + 1}}
+        <view class="locker-size-label">{{item.size === 'small' ? 'S' : item.size === 'medium' ? 'M' : 'L'}}</view>
+        <view wx:if="{{item.status === 'occupied' && item.temperature}}" class="locker-temperature">
+          {{item.temperature === 'constant' ? '🌡️' : item.temperature === 'low' ? '❄️' : '🔥'}}
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部信息 -->
+  <view class="footer courier-footer">
+    <view>递煌小黄柜 v1.0.0</view>
+    <view>© 2026 Food Locker System</view>
+  </view>
+</view>

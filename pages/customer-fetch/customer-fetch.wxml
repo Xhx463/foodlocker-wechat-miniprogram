@@ -1,0 +1,32 @@
+<view class="container">
+  <view class="content">
+    <view class="scan-qr">
+      <view class="qr-code">
+        <image src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='200' height='200' fill='%23ffffff'/%3E%3Crect width='60' height='60' x='20' y='20' fill='%23000000'/%3E%3Crect width='60' height='60' x='120' y='20' fill='%23000000'/%3E%3Crect width='60' height='60' x='20' y='120' fill='%23000000'/%3E%3Crect width='60' height='60' x='120' y='120' fill='%23000000'/%3E%3Crect width='60' height='60' x='70' y='70' fill='%23000000'/%3E%3C/svg%3E" mode="aspectFit" style="width: 100%; height: 100%;" />
+      </view>
+      <view class="scan-text">扫码取餐免排队</view>
+    </view>
+    
+    <view class="input-section">
+      <view class="input-label">请输入4位取餐码</view>
+      <view class="access-code-input">
+        <input class="code-input" type="number" maxlength="1" bindinput="onCodeInput" data-index="0" focus="{{focusIndex === 0}}" />
+        <input class="code-input" type="number" maxlength="1" bindinput="onCodeInput" data-index="1" focus="{{focusIndex === 1}}" />
+        <input class="code-input" type="number" maxlength="1" bindinput="onCodeInput" data-index="2" focus="{{focusIndex === 2}}" />
+        <input class="code-input" type="number" maxlength="1" bindinput="onCodeInput" data-index="3" focus="{{focusIndex === 3}}" />
+      </view>
+      <button class="btn" bindtap="onFetchFood" loading="{{loading}}">
+        {{loading ? '取件中...' : '取件'}}
+      </button>
+      <view wx:if="errorMessage" class="error-message">{{errorMessage}}</view>
+    </view>
+    
+    <view class="problem-section">
+      <view class="problem-title">取件遇到问题？</view>
+      <view class="problem-buttons">
+        <button class="problem-btn" bindtap="contactRider">联系骑手</button>
+        <button class="problem-btn" bindtap="contactService">联系客服</button>
+      </view>
+    </view>
+  </view>
+</view>

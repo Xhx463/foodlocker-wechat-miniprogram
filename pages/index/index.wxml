@@ -1,0 +1,98 @@
+<!--pages/index/index.wxml-->
+<view class="container fade-in">
+  <!-- 头部区域 -->
+  <view class="header">
+    <view class="logo">📦</view>
+    <view class="title">递煌小黄柜</view>
+    <view class="subtitle">集外卖柜与快递柜功能于一体的智能解决方案</view>
+  </view>
+
+
+
+  <!-- 快速入口 -->
+  <view class="button-container">
+    <view class="menu-button" bindtap="navigateToUser">
+      <view class="button-content">
+        <view class="button-icon">👤</view>
+        <view class="button-text">用户端</view>
+      </view>
+      <view class="arrow-icon">→</view>
+    </view>
+
+    <view class="menu-button" bindtap="navigateToRider">
+      <view class="button-content">
+        <view class="button-icon">🏍️</view>
+        <view class="button-text">骑手端</view>
+      </view>
+      <view class="arrow-icon">→</view>
+    </view>
+
+    <view class="menu-button" bindtap="navigateToCourier">
+      <view class="button-content">
+        <view class="button-icon">📦</view>
+        <view class="button-text">快递小哥端</view>
+      </view>
+      <view class="arrow-icon">→</view>
+    </view>
+
+    <view class="menu-button" bindtap="navigateToMerchant">
+      <view class="button-content">
+        <view class="button-icon">🛠️</view>
+        <view class="button-text">商家管理端</view>
+      </view>
+      <view class="arrow-icon">→</view>
+    </view>
+  </view>
+
+  <!-- 系统状态 -->
+  <view class="section">
+    <view class="section-title">系统状态</view>
+    <view class="status-grid">
+      <view class="status-card">
+        <view class="status-number">{{totalLockers}}</view>
+        <view class="status-label">柜子总数</view>
+      </view>
+      <view class="status-card">
+        <view class="status-number">{{availableLockers}}</view>
+        <view class="status-label">可用柜子</view>
+      </view>
+      <view class="status-card">
+        <view class="status-number">{{usageRate}}%</view>
+        <view class="status-label">使用率</view>
+      </view>
+    </view>
+    <!-- 格口大小分布 -->
+    <view class="locker-distribution">
+      <view class="distribution-title">格口分布</view>
+      <view class="distribution-grid">
+        <view class="distribution-item small">
+          <view class="distribution-icon">S</view>
+          <view class="distribution-info">
+            <view class="distribution-label">小格口</view>
+            <view class="distribution-count">{{smallLockers}}个</view>
+          </view>
+        </view>
+        <view class="distribution-item medium">
+          <view class="distribution-icon">M</view>
+          <view class="distribution-info">
+            <view class="distribution-label">中格口</view>
+            <view class="distribution-count">{{mediumLockers}}个</view>
+          </view>
+        </view>
+        <view class="distribution-item large">
+          <view class="distribution-icon">L</view>
+          <view class="distribution-info">
+            <view class="distribution-label">大格口</view>
+            <view class="distribution-count">{{largeLockers}}个</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部信息 -->
+  <view class="footer">
+    <view>递煌小黄柜 v1.0.0</view>
+    <view>© 2026 Food Locker System</view>
+  </view>
+</view>

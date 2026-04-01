@@ -1,0 +1,51 @@
+<view class="container">
+  <view class="content">
+    <view class="section">
+      <view class="section-title">格口可视化</view>
+      <view class="cabinet-selector">
+        <picker bindchange="onCabinetChange" value="{{selectedCabinetIndex}}" range="{{cabinets}}">
+          <view class="picker-text">
+            {{cabinets[selectedCabinetIndex]}}
+          </view>
+        </picker>
+      </view>
+    </view>
+    
+    <view class="section">
+      <view class="lattice-grid">
+        <view wx:for="{{lattices}}" wx:key="id" class="lattice-item" data-id="{{item.id}}" bindtap="onLatticeTap">
+          <view class="lattice-no">{{item.latticeNo}}</view>
+          <view class="lattice-status {{item.status === '可用' ? 'status-available' : item.status === '占用' ? 'status-occupied' : 'status-maintenance'}}">
+            {{item.status}}
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="section">
+      <view class="section-title">状态说明</view>
+      <view class="status-legend">
+        <view class="legend-item">
+          <view class="legend-color status-available"></view>
+          <view class="legend-text">可用</view>
+        </view>
+        <view class="legend-item">
+          <view class="legend-color status-occupied"></view>
+          <view class="legend-text">占用</view>
+        </view>
+        <view class="legend-item">
+          <view class="legend-color status-maintenance"></view>
+          <view class="legend-text">维护中</view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="section">
+      <view class="section-title">操作</view>
+      <view class="action-buttons">
+        <button class="btn" bindtap="refreshLattices">刷新状态</button>
+        <button class="btn" bindtap="goBack">返回运营</button>
+      </view>
+    </view>
+  </view>
+</view>

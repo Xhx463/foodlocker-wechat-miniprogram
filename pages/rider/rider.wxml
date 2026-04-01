@@ -1,0 +1,106 @@
+<!--pages/rider/rider.wxml-->
+<view class="container fade-in">
+  <!-- 头部区域 -->
+  <view class="header rider-header">
+    <view class="logo rider-logo">🏍️</view>
+    <view class="title rider-title">骑手端</view>
+    <view class="subtitle rider-subtitle">存餐与取件服务</view>
+  </view>
+
+  <!-- 功能选择 -->
+  <view class="button-container">
+    <view class="menu-button rider-menu-button" bindtap="showStoreSection">
+      <view class="button-content">
+        <view class="button-icon rider-button-icon">🍔</view>
+        <view class="button-text rider-button-text">存餐服务</view>
+      </view>
+      <view class="arrow-icon">→</view>
+    </view>
+
+    <view class="menu-button rider-menu-button" bindtap="showCourierSection">
+      <view class="button-content">
+        <view class="button-icon rider-button-icon">📦</view>
+        <view class="button-text rider-button-text">取件服务</view>
+      </view>
+      <view class="arrow-icon">→</view>
+    </view>
+  </view>
+
+  <!-- 存餐服务 -->
+  <view class="section rider-section" wx:if="{{showStore}}">
+    <view class="section-title rider-section-title">存餐服务</view>
+    <view class="input-group">
+      <view class="input-label rider-input-label">商家名称</view>
+      <input class="input-field rider-input-field" placeholder="请输入商家名称" bindinput="onMerchantNameInput" value="{{merchantName}}" />
+    </view>
+    <view class="input-group">
+      <view class="input-label rider-input-label">取餐码</view>
+      <input class="input-field rider-input-field" placeholder="请输入取餐码" bindinput="onPickupCodeInput" value="{{pickupCode}}" />
+    </view>
+    <view class="input-group">
+      <view class="input-label rider-input-label">柜体温度</view>
+      <view class="temperature-selector rider-temperature-selector">
+        <view class="temperature-option" wx:for="{{temperatureOptions}}" wx:key="index" 
+              class="temperature-option rider-temperature-option {{selectedTemperature === item.value ? 'selected' : ''}}"
+              bindtap="selectTemperature" data-value="{{item.value}}">
+          <view class="temperature-icon">{{item.icon}}</view>
+          <view class="temperature-text">{{item.label}}</view>
+        </view>
+      </view>
+    </view>
+    <button class="primary-button rider-primary-button" bindtap="storeFood">确认存餐</button>
+    <view class="result-message rider-result-message" wx:if="{{storeResult}}">
+      <view class="result-{{storeResult.type}}">{{storeResult.message}}</view>
+      <view wx:if="{{storeResult.pickupCode}}" class="pickup-code rider-pickup-code">取餐码：{{storeResult.pickupCode}}</view>
+      <view wx:if="{{storeResult.temperature}}" class="temperature-info rider-temperature-info">温度模式：{{storeResult.temperature}}</view>
+    </view>
+  </view>
+
+  <!-- 取件服务 -->
+  <view class="section rider-section" wx:if="{{showCourier}}">
+    <view class="section-title rider-section-title">取件服务</view>
+    <view class="input-group">
+      <view class="input-label rider-input-label">快递单号</view>
+      <input class="input-field rider-input-field" placeholder="请输入快递单号" bindinput="onCourierIdInput" value="{{courierId}}" />
+    </view>
+    <button class="primary-button rider-primary-button" bindtap="pickupCourier">确认取件</button>
+    <view class="result-message rider-result-message" wx:if="{{courierResult}}">
+      <view class="result-{{courierResult.type}}">{{courierResult.message}}</view>
+    </view>
+  </view>
+
+  <!-- 柜子状态 -->
+  <view class="section rider-section">
+    <view class="section-title rider-section-title">柜子状态</view>
+    <!-- 格口大小说明 -->
+    <view class="locker-size-legend">
+      <view class="legend-item">
+        <view class="legend-icon small">S</view>
+        <view class="legend-text">小格口(1-8) 外卖</view>
+      </view>
+      <view class="legend-item">
+        <view class="legend-icon medium">M</view>
+        <view class="legend-text">中格口(9-12)</view>
+      </view>
+      <view class="legend-item">
+        <view class="legend-icon large">L</view>
+        <view class="legend-text">大格口(13-16)</view>
+      </view>
+    </view>
+    <view class="locker-grid rider-locker-grid">
+      <view wx:for="{{lockerStatus}}" wx:key="index" class="locker-cell rider-locker-cell locker-{{item.status}} locker-size-{{item.size}}" style="{{item.status === 'occupied' ? (item.temperature === 'constant' ? 'background: linear-gradient(135deg, #e3f2fd, #bbdefb); border-color: #2196f3;' : item.temperature === 'low' ? 'background: linear-gradient(135deg, #e0f7fa, #b2ebf2); border-color: #00bcd4;' : 'background: linear-gradient(135deg, #fff3e0, #ffcc80); border-color: #ff9800;' ) : ''}}">
+        {{index + 1}}
+        <view class="locker-size-label">{{item.size === 'small' ? 'S' : item.size === 'medium' ? 'M' : 'L'}}</view>
+        <view wx:if="{{item.status === 'occupied' && item.temperature}}" class="locker-temperature">
+          {{item.temperature === 'constant' ? '🌡️' : item.temperature === 'low' ? '❄️' : '🔥'}}
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部信息 -->
+  <view class="footer rider-footer">
+    <view>递煌小黄柜 v1.0.0</view>
+    <view>© 2026 Food Locker System</view>
+  </view>
+</view>

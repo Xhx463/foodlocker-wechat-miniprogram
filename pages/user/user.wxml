@@ -1,0 +1,95 @@
+<!--pages/user/user.wxml-->
+<view class="container fade-in">
+  <!-- 头部区域 -->
+  <view class="header user-header">
+    <view class="logo user-logo">🎉</view>
+    <view class="title user-title">用户端</view>
+    <view class="subtitle user-subtitle">取餐与寄件服务</view>
+  </view>
+
+  <!-- 功能选择 -->
+  <view class="button-container">
+    <view class="menu-button user-menu-button" bindtap="showPickupSection">
+      <view class="button-content">
+        <view class="button-icon user-button-icon">🍔</view>
+        <view class="button-text user-button-text">取餐服务</view>
+      </view>
+      <view class="arrow-icon">→</view>
+  </view>
+
+  <view class="divider"></view>
+
+  <view class="menu-button user-menu-button" bindtap="showSendSection">
+      <view class="button-content">
+        <view class="button-icon user-button-icon">📦</view>
+        <view class="button-text user-button-text">寄件服务</view>
+      </view>
+      <view class="arrow-icon">→</view>
+    </view>
+  </view>
+
+  <!-- 取餐服务 -->
+  <view class="section user-section" wx:if="{{showPickup}}">
+    <view class="section-title user-section-title">取餐服务</view>
+    <view class="input-group">
+      <view class="input-label user-input-label">取餐码</view>
+      <input class="input-field user-input-field" placeholder="请输入取餐码" bindinput="onPickupCodeInput" value="{{pickupCode}}" />
+    </view>
+    <button class="primary-button user-primary-button" bindtap="pickupFood">确认取餐</button>
+    <view class="result-message user-result-message" wx:if="{{pickupResult}}">
+      <view class="result-{{pickupResult.type}}">{{pickupResult.message}}</view>
+    </view>
+  </view>
+
+  <!-- 寄件服务 -->
+  <view class="section user-section" wx:if="{{showSend}}">
+    <view class="section-title user-section-title">寄件服务</view>
+    <view class="input-group">
+      <view class="input-label user-input-label">寄件人姓名</view>
+      <input class="input-field user-input-field" placeholder="请输入姓名" bindinput="onSenderNameInput" value="{{senderName}}" />
+    </view>
+    <view class="input-group">
+      <view class="input-label user-input-label">寄件人电话</view>
+      <input class="input-field user-input-field" placeholder="请输入电话" bindinput="onSenderPhoneInput" value="{{senderPhone}}" />
+    </view>
+    <view class="input-group">
+      <view class="input-label user-input-label">收件人姓名</view>
+      <input class="input-field user-input-field" placeholder="请输入姓名" bindinput="onReceiverNameInput" value="{{receiverName}}" />
+    </view>
+    <view class="input-group">
+      <view class="input-label user-input-label">收件人电话</view>
+      <input class="input-field user-input-field" placeholder="请输入电话" bindinput="onReceiverPhoneInput" value="{{receiverPhone}}" />
+    </view>
+    <view class="input-group">
+      <view class="input-label user-input-label">快递类型</view>
+      <picker class="input-field user-input-field" range="{{expressTypes}}" bindchange="onExpressTypeChange" value="{{expressTypeIndex}}">
+        <view>{{expressTypes[expressTypeIndex]}}</view>
+      </picker>
+    </view>
+    <view class="input-group">
+      <view class="input-label user-input-label">包裹大小</view>
+      <view class="package-size-selector">
+        <view class="package-size-option" wx:for="{{packageSizeOptions}}" wx:key="index" 
+              class="package-size-option {{selectedPackageSize === item.value ? 'selected' : ''}}"
+              bindtap="selectPackageSize" data-value="{{item.value}}">
+          <view class="package-size-icon">{{item.icon}}</view>
+          <view class="package-size-label">{{item.label}}</view>
+          <view class="package-size-desc">{{item.desc}}</view>
+        </view>
+      </view>
+    </view>
+    <button class="primary-button user-primary-button" bindtap="sendParcel">确认寄件</button>
+    <view class="result-message user-result-message" wx:if="{{sendResult}}">
+      <view class="result-{{sendResult.type}}">{{sendResult.message}}</view>
+      <view wx:if="{{sendResult.packageSize}}" class="package-size-info">包裹大小：{{sendResult.packageSize}}</view>
+    </view>
+  </view>
+
+
+
+  <!-- 底部信息 -->
+  <view class="footer user-footer">
+    <view>递煌小黄柜 v1.0.0</view>
+    <view>© 2026 Food Locker System</view>
+  </view>
+</view>
